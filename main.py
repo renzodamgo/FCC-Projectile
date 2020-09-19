@@ -7,7 +7,7 @@ class ball:
         self.v_x = v_o*math.cos(angulo)
         self.v_y = v_o*math.sin(angulo)
         self.m = masa
-        self.dt = 0.01
+        self.dt = 0.0001
         self.t = 0
         self.g = -9.81
         self.F = self.m*self.g
@@ -23,18 +23,35 @@ class ball:
         return self.x, self.y
 
 
+y_max = 0
 v0 = 8
-theta = (30*math.pi) / 180
+theta = (45*math.pi) / 180
 m = 0.5
 X = []
 Y = []
 ball = ball(v0, theta, m)
-for _ in range(100):
+
+
+def max_H(v, angle):
+    a = (v**2)*(math.sin(angle)**2)
+    b = 2*9.81
+    H = a/b
+    return H
+
+
+while True:
     x, y = ball.move()
+
+    if y < 0:
+        break
+    if y >= y_max:
+        y_max = y
     X.append(x)
     Y.append(y)
 
+print(max_H(v0, theta))
+print(y_max)
 
 pyplot.plot(X, Y)
-
+pyplot.axis('square')
 pyplot.show()
